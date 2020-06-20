@@ -33,6 +33,7 @@ public class QuickRenamerCommand {
         player.sendMessage(CC.translate("&7- &e/rename <name> &7(Rename the item in your hand)"));
         player.sendMessage(CC.translate("&7- &e/lore add <line> &7(Add a line to the lore)"));
         player.sendMessage(CC.translate("&7- &e/lore remove <line #> &7(Remove a line from the lore by the number)"));
+        player.sendMessage(CC.translate("&7- &e/lore edit <line #> <text> &7(Edit a line on the lore)"));
         player.sendMessage(CC.translate("&7- &e/lore clear &7(Clear the lore of the item in your hand)"));
         player.sendMessage(CC.translate("&8&m----------------------------------"));
     }

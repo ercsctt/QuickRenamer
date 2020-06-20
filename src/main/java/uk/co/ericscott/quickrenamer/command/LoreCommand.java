@@ -24,7 +24,7 @@ public class LoreCommand {
     public void onLoreCommand(CommandArgs args) {
         Player player = args.getPlayer();
 
-        player.sendMessage(CC.translate("&cUsage: /lore <add/remove/clear> [line/number]"));
+        player.sendMessage(CC.translate("&cUsage: /lore <add/remove/edit/clear> [line/number] [text]"));
     }
 
     @Command(name = "lore.add", permission = "quickrenamer.lore", inGameOnly = true)
@@ -132,6 +132,62 @@ public class LoreCommand {
 
         player.setItemInHand(itemStack);
         player.sendMessage(CC.translate("&aCleared the lore of the item in your hand."));
+    }
+
+    @Command(name = "lore.edit", permission = "quickrenamer.lore", inGameOnly = true)
+    public void onLoreEditCommand(CommandArgs args) {
+        Player player = args.getPlayer();
+
+        if(args.getArgs().length <= 1) {
+            player.sendMessage(CC.translate("&cUsage: /lore edit <line #> <text>"));
+            return;
+        }
+
+        int index;
+        try {
+            index = Integer.parseInt(args.getArgs(0));
+        } catch (NumberFormatException e) {
+            player.sendMessage(CC.translate("&cPlease provide a line number to remove."));
+            return;
+        }
+
+        ItemStack itemStack = player.getItemInHand();
+
+        if(itemStack == null || itemStack.getType() == Material.AIR) {
+            player.sendMessage(CC.translate("&cYou must have an item in your hand to do this."));
+            return;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (int i = 1; i < args.getArgs().length; i++) {
+            builder.append(args.getArgs(i)).append(" ");
+        }
+        String text = CC.translate(builder.toString());
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        List<String> lore = (itemMeta.getLore() == null ? new ArrayList<>() : itemMeta.getLore());
+
+        if(lore.size() <= 0) {
+            player.sendMessage(CC.translate("&cThat item's lore is currently empty."));
+            return;
+        }
+
+        try {
+            lore.get(index - 1);
+        }catch (IndexOutOfBoundsException e) {
+            player.sendMessage(CC.translate("&cThat line doesn't exist on the lore (Size: " + lore.size() + ")"));
+            return;
+        }
+
+        lore.set(index - 1, text);
+
+        itemMeta.setLore(lore);
+
+        itemStack.setItemMeta(itemMeta);
+
+        player.setItemInHand(itemStack);
+        player.sendMessage(CC.translate("&aEdited lore of item the in your hand."));
     }
 
 }
