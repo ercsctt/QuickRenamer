@@ -1,0 +1,5 @@
+name: QuickRenamer
+main: uk.co.ericscott.quickrenamer.QuickRenamer
+version: ${project.version}
+authors: [Eric]
+description: Quickly rename items with a custom name and lore!
